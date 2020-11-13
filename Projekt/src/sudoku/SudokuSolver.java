@@ -1,4 +1,4 @@
-package sudokuSolver;
+package sudoku;
 
 public interface SudokuSolver {
 	   /** Tömmer hela sudokut */
