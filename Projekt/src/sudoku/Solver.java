@@ -1,5 +1,6 @@
 package sudoku;
 
+import java.io.*;
 import java.util.*;
 
 public class Solver implements SudokuSolver {
@@ -23,6 +24,7 @@ public class Solver implements SudokuSolver {
 	@Override
 	public void setNumber(int row, int col, int number) {
 		if (allowedPlacement(row, col, number)) {
+			// System.out.println(row + " " + col + " " + number);
 			grid[row][col] = number;
 		}
 	}
@@ -34,7 +36,56 @@ public class Solver implements SudokuSolver {
 
 	@Override
 	public boolean solve() {
-		// TODO implement
+		solveSquare(0, 0);
+		return isSolved();
+	}
+
+	private void clear(int row, int col) {
+		grid[row][col] = 0;
+	}
+
+	private void solveSquare(int row, int col) {
+		int num = getNumber(row, col);
+		if (num == 0) {
+			tryPlacing(row, col);
+		} else if (!tryPlacing(row, col, num)) {
+			return;
+		}
+		if (row < 8) {
+			solveSquare(row + 1, col);
+		} else if (row <= 8 && col < 8) {
+			solveSquare(0, col + 1);
+		} else {
+			return;
+		}
+		solveSquare(row, col);
+	}
+
+	private boolean isEmpty(int row, int col) {
+		return grid[row][col] == 0;
+	}
+
+	private void tryPlacing(int row, int col) {
+		for (int i = 1; i < 10; i++) {
+			if (allowedPlacement(row, col, i)) {
+				setNumber(row, col, i);
+			}
+		}
+	}
+
+	private boolean tryPlacing(int row, int col, int num) {
+		int i = num + 1;
+		while (i % 10 != num) {
+			i = i % 10;
+			if (allowedPlacement(row, col, i)) {
+				setNumber(row, col, i);
+				return true;
+			}
+			i++;
+		}
+		if (i % 10 == num) {
+			clear(row, col);
+		}
 		return false;
 	}
 
@@ -87,6 +138,8 @@ public class Solver implements SudokuSolver {
 	}
 
 	private boolean allowedPlacement(int row, int col, int number) {
+		if (number > 9 || number < 1)
+			return false;
 		for (int i = 0; i < 9; i++) {
 			if (grid[i][col] == number) {
 				return false;
