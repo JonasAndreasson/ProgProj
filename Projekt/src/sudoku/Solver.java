@@ -24,8 +24,9 @@ public class Solver implements SudokuSolver {
 	@Override
 	public void setNumber(int row, int col, int number) {
 		if (allowedPlacement(row, col, number)) {
-			// System.out.println(row + " " + col + " " + number);
+
 			grid[row][col] = number;
+
 		}
 	}
 
@@ -36,7 +37,10 @@ public class Solver implements SudokuSolver {
 
 	@Override
 	public boolean solve() {
-		solveSquare(0, 0);
+		for (int i = 0; i < 9; i++) {
+			solveRow(0, i);
+		}
+
 		return isSolved();
 	}
 
@@ -44,47 +48,53 @@ public class Solver implements SudokuSolver {
 		grid[row][col] = 0;
 	}
 
-	private void solveSquare(int row, int col) {
-		int num = getNumber(row, col);
-		if (num == 0) {
+	private void solveRow(int row, int col) {
+		boolean ourInput = false;
+		if (solvedCol(col)) {
+			return;
+		}
+		if (isEmpty(row, col)) {
+			ourInput = true;
 			tryPlacing(row, col);
-		} else if (!tryPlacing(row, col, num)) {
+			if (isEmpty(row, col)) {
+				return;
+			}
+		}
+		solveRow(row + 1, col);
+		if (solvedCol(col)) {
 			return;
 		}
-		if (row < 8) {
-			solveSquare(row + 1, col);
-		} else if (row <= 8 && col < 8) {
-			solveSquare(0, col + 1);
-		} else {
-			return;
+		int num = getNumber(row, col);
+		if (ourInput)
+			solve(row, col, num);
+	}
+
+	private void solve(int row, int col, int num) {
+		if (tryPlacing(row, col, num)) {
+			solveRow(row + 1, col);
 		}
-		solveSquare(row, col);
 	}
 
 	private boolean isEmpty(int row, int col) {
 		return grid[row][col] == 0;
 	}
 
-	private void tryPlacing(int row, int col) {
+	private boolean tryPlacing(int row, int col) {
 		for (int i = 1; i < 10; i++) {
-			if (allowedPlacement(row, col, i)) {
-				setNumber(row, col, i);
-			}
-		}
-	}
-
-	private boolean tryPlacing(int row, int col, int num) {
-		int i = num + 1;
-		while (i % 10 != num) {
-			i = i % 10;
 			if (allowedPlacement(row, col, i)) {
 				setNumber(row, col, i);
 				return true;
 			}
-			i++;
 		}
-		if (i % 10 == num) {
-			clear(row, col);
+		return false;
+	}
+
+	private boolean tryPlacing(int row, int col, int num) {
+		for (int i = 1; i < 10; i++) {
+			if (allowedPlacement(row, col, i) && i != num) {
+				setNumber(row, col, i);
+				return true;
+			}
 		}
 		return false;
 	}
