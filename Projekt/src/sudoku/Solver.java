@@ -37,15 +37,64 @@ public class Solver implements SudokuSolver {
 
 	@Override
 	public boolean solve() {
-		for (int i = 0; i < 9; i++) {
-			solveRow(0, i);
-		}
+
+		solveIt(0, 0);
 
 		return isSolved();
 	}
 
 	private void clear(int row, int col) {
 		grid[row][col] = 0;
+	}
+
+	private void solveIt(int row, int col) {
+		boolean ourInput = false;
+		if (col == 9) {
+			return;
+		}
+		if (row == 9) {
+			solveIt(0, col + 1);
+			return;
+		}
+		if (isEmpty(row, col)) {
+			if (tryPlacing(row, col)) {
+				ourInput = true;
+			} else {
+				return;
+			}
+
+		}
+		if (isSolved()) {
+			return;
+		}
+		solveIt(row + 1, col);
+		if (isSolved()) {
+			return;
+		}
+		ArrayList<Integer> list = new ArrayList<>();
+		while (ourInput && tryPlacing(row, col, list)) {
+			list.add(getNumber(row, col));
+			solveIt(row + 1, col);
+			if (isSolved()) {
+				return;
+			}
+		}
+		if (!isSolved() && ourInput) {
+			clear(row, col);
+			return;
+		}
+
+	}
+
+	private boolean tryPlacing(int row, int col, List<Integer> list) {
+		for (int i = 1; i <= 9; i++) {
+			if (allowedPlacement(row, col, i) && !list.contains(i)) {
+				setNumber(row, col, i);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void solveRow(int row, int col) {
