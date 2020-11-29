@@ -19,6 +19,7 @@ public class SudokoGrid {
         final Border fieldBorder = BorderFactory.createLineBorder(Color.BLACK);
         final JPanel grid = new JPanel(new GridLayout(9, 0));
         ArrayList<JTextField> list = new ArrayList<>();
+        final int[][] matris = new int[9][9];
         for (int row = 0; row < 9; ++row) {
         	for(int col = 0; col<9;col++) {
             final JTextField field = new JTextField(2);
@@ -44,7 +45,7 @@ public class SudokoGrid {
         frame.setVisible(true);
     }
     
-    public static int[][] toMatrix(ArrayList<JTextField> lista){
+    public static void toMatrix(ArrayList<JTextField> lista){
     	int[][] mat = new int[9][9];
     	int i = 0;
     	for (int row = 0; row < 9; ++row) {
@@ -58,10 +59,19 @@ public class SudokoGrid {
         		mat[row][col]=0;
         	}
         	i++;
-        	System.out.println(mat[row][col]);
         	}
        }
-    	return mat;
+    	
+    	setNumbers(mat);
+    }
+    
+    public static void setNumbers(int[][] pog) {
+    	Solver solve = new Solver(pog);
+    	if(solve.solve()) {
+    		for(int i = 0; i<81;i++) {
+    			
+    		}
+    	}
     }
     
     public static void main(final String[] args) {
