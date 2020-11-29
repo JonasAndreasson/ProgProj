@@ -62,14 +62,18 @@ public class SudokoGrid {
         	}
        }
     	
-    	setNumbers(mat);
+    	setNumbers(mat,lista);
     }
     
-    public static void setNumbers(int[][] pog) {
+    public static void setNumbers(int[][] pog,ArrayList<JTextField> lista) {
     	Solver solve = new Solver(pog);
+    	int i = 0;
     	if(solve.solve()) {
-    		for(int i = 0; i<81;i++) {
-    			
+    		for(int row = 0; row<9;row++) {
+    			for(int col = 0; col<9;col++) {
+    				lista.get(i).setText(""+solve.getNumber(row, col));
+    				i++;
+    			}
     		}
     	}
     }
