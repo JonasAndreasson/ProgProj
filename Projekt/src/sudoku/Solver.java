@@ -10,6 +10,9 @@ public class Solver implements SudokuSolver {
 		grid = new int[9][9];
 		clear();
 	}
+	public Solver(int [][] grid) {
+		this.grid = grid;
+	}
 
 	@Override
 	public void clear() {
