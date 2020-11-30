@@ -8,7 +8,7 @@ class TestSolveEmpty {
 	Solver solver = new Solver();
 	@Before
 	public void setUp() {
-	solver.clear();
+	solver.removeNumber();
 	}
 
 	@Test

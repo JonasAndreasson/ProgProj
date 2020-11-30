@@ -8,7 +8,7 @@ public class Solver implements SudokuSolver {
 
 	public Solver() {
 		grid = new int[9][9];
-		clear();
+		removeNumber();
 	}
 
 	public Solver(int[][] grid) {
@@ -16,7 +16,7 @@ public class Solver implements SudokuSolver {
 	}
 
 	@Override
-	public void clear() {
+	public void removeNumber() {
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[i].length; j++) {
 				grid[i][j] = 0;
@@ -47,7 +47,8 @@ public class Solver implements SudokuSolver {
 		return isSolved();
 	}
 
-	private void clear(int row, int col) {
+	@Override
+	public void removeNumber(int row, int col) {
 		grid[row][col] = 0;
 	}
 
@@ -84,7 +85,7 @@ public class Solver implements SudokuSolver {
 			}
 		}
 		if (!isSolved() && ourInput) {
-			clear(row, col);
+			removeNumber(row, col);
 			return;
 		}
 
@@ -240,11 +241,28 @@ public class Solver implements SudokuSolver {
 		boolean solve = true;
 		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < grid[row].length; col++) {
-				if (!allowedPlacement(row, col, grid[row][col],grid)) {
+				if (!allowedPlacement(row, col, grid[row][col], grid)) {
 					solve = false;
 				}
 			}
 		}
 		return solve;
+	}
+
+	@Override
+	public boolean trySetNumber(int row, int col, int number) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int[][] getNumbers() {
+		return grid;
+	}
+
+	@Override
+	public void setNumbers(int[][] grid) {
+		this.grid = grid;
+
 	}
 }
