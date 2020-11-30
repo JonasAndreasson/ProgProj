@@ -10,7 +10,8 @@ public class Solver implements SudokuSolver {
 		grid = new int[9][9];
 		clear();
 	}
-	public Solver(int [][] grid) {
+
+	public Solver(int[][] grid) {
 		this.grid = grid;
 	}
 
@@ -215,5 +216,35 @@ public class Solver implements SudokuSolver {
 		}
 
 		return true;
+	}
+
+	private static boolean allowedPlacement(int row, int col, int number, int[][] grid) {
+		if (number > 9 || number < 1)
+			return false;
+		for (int i = 0; i < 9; i++) {
+			if (grid[i][col] == number) {
+				return false;
+			}
+			if (grid[row][i] == number) {
+				return false;
+			}
+			if (grid[3 * (row / 3) + (i % 3)][3 * (col / 3) + (i / 3)] == number) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static boolean isSolveable(int[][] grid) {
+		boolean solve = true;
+		for (int row = 0; row < grid.length; row++) {
+			for (int col = 0; col < grid[row].length; col++) {
+				if (!allowedPlacement(row, col, grid[row][col],grid)) {
+					solve = false;
+				}
+			}
+		}
+		return solve;
 	}
 }
