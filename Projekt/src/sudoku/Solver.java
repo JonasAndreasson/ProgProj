@@ -16,6 +16,9 @@ public class Solver implements SudokuSolver {
 	}
 
 	@Override
+	/**
+	 * Removes all numbers from the board
+	 */
 	public void removeNumber() {
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[i].length; j++) {
@@ -26,8 +29,30 @@ public class Solver implements SudokuSolver {
 	}
 
 	@Override
+	/**
+	 * Removes the number located on row row and column col
+	 * 
+	 * @param row  the row where the number is located
+	 * @param col  the column where the number is located
+	 * 
+	 * @throws IllegalArgumentException if row or col is outside [0..8]
+	 */
+	public void removeNumber(int row, int col) {
+		grid[row][col] = 0;
+	}
+
+	@Override
+	/**
+	 * Sets the digit number in the box row, col.
+	 * 
+	 * @param row    The row
+	 * @param col    The column
+	 * @param number The digit to insert in row, col
+	 * @throws IllegalArgumentException if number is outside [1..9] or row or col is
+	 *                                  outside [0..8]
+	 */
 	public void setNumber(int row, int col, int number) {
-		if (allowedPlacement(row, col, number)) {
+		if (trySetNumber(row, col, number)) {
 
 			grid[row][col] = number;
 
@@ -35,6 +60,16 @@ public class Solver implements SudokuSolver {
 	}
 
 	@Override
+
+	/**
+	 * Returns the number in the row and in the column col
+	 * 
+	 * @param row the row where the number is located
+	 * @param col the column where the number is located
+	 * @return the number as an Integer
+	 * 
+	 * @throws IllegalArgumentException if row or col is outside [0..8]
+	 */
 	public int getNumber(int row, int col) {
 		return grid[row][col];
 	}
@@ -45,11 +80,6 @@ public class Solver implements SudokuSolver {
 		solveIt(0, 0);
 
 		return isSolved();
-	}
-
-	@Override
-	public void removeNumber(int row, int col) {
-		grid[row][col] = 0;
 	}
 
 	private void solveIt(int row, int col) {
@@ -93,7 +123,7 @@ public class Solver implements SudokuSolver {
 
 	private boolean tryPlacing(int row, int col, List<Integer> list) {
 		for (int i = 1; i <= 9; i++) {
-			if (allowedPlacement(row, col, i) && !list.contains(i)) {
+			if (trySetNumber(row, col, i) && !list.contains(i)) {
 				setNumber(row, col, i);
 				return true;
 			}
@@ -135,7 +165,7 @@ public class Solver implements SudokuSolver {
 
 	private boolean tryPlacing(int row, int col) {
 		for (int i = 1; i < 10; i++) {
-			if (allowedPlacement(row, col, i)) {
+			if (trySetNumber(row, col, i)) {
 				setNumber(row, col, i);
 				return true;
 			}
@@ -145,7 +175,7 @@ public class Solver implements SudokuSolver {
 
 	private boolean tryPlacing(int row, int col, int num) {
 		for (int i = 1; i < 10; i++) {
-			if (allowedPlacement(row, col, i) && i != num) {
+			if (trySetNumber(row, col, i) && i != num) {
 				setNumber(row, col, i);
 				return true;
 			}
@@ -201,7 +231,21 @@ public class Solver implements SudokuSolver {
 		return new String(temp);
 	}
 
-	private boolean allowedPlacement(int row, int col, int number) {
+	@Override
+
+	/**
+	 * Kollar om siffran number kan sättas i raden row och kolumnen col, om det inte
+	 * går enligt spelreglerna returneras false
+	 * 
+	 * @param row    the row the number should be tried
+	 * @param col    the colum the number should be tried
+	 * @param number the number that should be tried
+	 * @return true if the number is allowed in row row and column col, else returns
+	 *         false
+	 * @throws IllegalArgumentException if number is outside [1..9] or row or col is
+	 *                                  outside [0..8]
+	 */
+	public boolean trySetNumber(int row, int col, int number) {
 		if (number > 9 || number < 1)
 			return false;
 		for (int i = 0; i < 9; i++) {
@@ -247,12 +291,6 @@ public class Solver implements SudokuSolver {
 			}
 		}
 		return solve;
-	}
-
-	@Override
-	public boolean trySetNumber(int row, int col, int number) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override

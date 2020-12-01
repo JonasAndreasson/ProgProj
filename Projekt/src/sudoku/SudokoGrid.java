@@ -26,6 +26,7 @@ public class SudokoGrid {
 			for (int col = 0; col < 9; col++) {
 				final JTextField field = new JTextField(2);
 				field.addCaretListener((e) -> updatedField(e.getSource().toString(), field.getText(), solver));
+				
 				field.setHorizontalAlignment(JTextField.CENTER); // Center text horizontally in the text field.
 				field.setBorder(fieldBorder); // Add the colored border.
 				grid.add(field);
@@ -68,10 +69,16 @@ public class SudokoGrid {
 		int number;
 		try {
 			number = Integer.parseInt(input);
+			if (solver.trySetNumber(row, col, number)) {
+				solver.setNumber(row, col, number);
+			} else {
+				JOptionPane.showMessageDialog(null, number + " is an illegal move at position: " + row + ", "+ col);
+			}
 		} catch (Exception e) {
-			number = 0;
+			solver.removeNumber(row, col);
+
 		}
-		solver.setNumber(row, col, number);
+
 	}
 
 	public static void setNumbers(SudokuSolver solve, ArrayList<JTextField> lista) {
