@@ -242,20 +242,20 @@ public class Solver implements SudokuSolver {
 	 * @param number the number that should be tried
 	 * @return true if the number is allowed in row row and column col, else returns
 	 *         false
-	 * @throws IllegalArgumentException if number is outside [1..9] or row or col is
-	 *                                  outside [0..8]
+	 * @throws IllegalArgumentException if row or col is outside [0..8]
 	 */
+	//TODO Add Private Help to see that it isn't checking the position on which we are on
 	public boolean trySetNumber(int row, int col, int number) {
 		if (number > 9 || number < 1)
 			return false;
 		for (int i = 0; i < 9; i++) {
-			if (grid[i][col] == number) {
+			if (grid[i][col] == number && grid[row][col] != grid[i][col]) {
 				return false;
 			}
-			if (grid[row][i] == number) {
+			if (grid[row][i] == number && grid[row][col] != grid[row][i]) {
 				return false;
 			}
-			if (grid[3 * (row / 3) + (i % 3)][3 * (col / 3) + (i / 3)] == number) {
+			if (grid[3 * (row / 3) + (i % 3)][3 * (col / 3) + (i / 3)] == number && grid[3 * (row / 3) + (i % 3)][3 * (col / 3) + (i / 3)] != grid[row][col]) {
 				return false;
 			}
 		}
