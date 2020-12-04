@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.List;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -21,11 +20,10 @@ public class SudokoGrid {
 		final JPanel grid = new JPanel(new GridLayout(9, 0));
 		final SudokuSolver solver = new Solver();
 		ArrayList<JTextField> list = new ArrayList<>();
-		final int[][] matris = new int[9][9];
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
 				final JTextField field = new JTextField(2);
-				field.addCaretListener((e) -> updatedField(e.getSource().toString(), field.getText(), solver));
+				field.addCaretListener(e -> updatedField(e.getSource().toString(), field.getText(), solver));
 				
 				field.setHorizontalAlignment(JTextField.CENTER); // Center text horizontally in the text field.
 				field.setBorder(fieldBorder); // Add the colored border.
