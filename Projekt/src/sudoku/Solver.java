@@ -4,15 +4,11 @@ import java.util.*;
 
 public class Solver implements SudokuSolver {
 	private int[][] grid;
-	final static String correct = "123456789";
+	static final String correct = "123456789";
 
 	public Solver() {
 		grid = new int[9][9];
 		removeNumber();
-	}
-
-	public Solver(int[][] grid) {
-		this.grid = grid;
 	}
 
 	@Override
@@ -192,23 +188,20 @@ public class Solver implements SudokuSolver {
 	@Override
 
 	/**
-	 * Kollar om siffran number kan sättas i raden row och kolumnen col, om det inte
-	 * går enligt spelreglerna returneras false
+	 * Kollar om siffran number kan sÃ¤ttas i raden row och kolumnen col, om det inte
+	 * gÃ¥r enligt spelreglerna returneras false
 	 * 
 	 * @param row    the row the number should be tried
-	 * @param col    the colum the number should be tried
+	 * @param col    the column the number should be tried
 	 * @param number the number that should be tried
 	 * @return true if the number is allowed in row row and column col, else returns
 	 *         false
 	 * @throws IllegalArgumentException if row or col is outside [0..8]
 	 */
-	// TODO Add Private Help to see that it isn't checking the position on which we
-	// are on
 	public boolean trySetNumber(int row, int col, int number) {
 		int rowItr;
 		int colItr;
-		if (number > 9 || number < 1)
-			return false;
+
 		for (int i = 0; i < 9; i++) {
 			rowItr = 3 * (row / 3) + (i % 3);
 			colItr = 3 * (col / 3) + (i / 3);
@@ -227,14 +220,6 @@ public class Solver implements SudokuSolver {
 		return true;
 	}
 
-	/**
-	 * 
-	 * @param row    the row for the cell
-	 * @param col    the column for the cell
-	 * @param rowItr the row for the cell that it's iterating over
-	 * @param colItr the column for the cell that it's iterating over
-	 * @return true if the cell is the same, otherwise false
-	 */
 	private boolean sameCell(int row, int col, int rowItr, int colItr) {
 		return (row == rowItr && col == colItr);
 
