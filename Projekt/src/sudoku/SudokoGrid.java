@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -69,7 +70,6 @@ public class SudokoGrid {
 			number = Integer.parseInt(input);
 			if (solver.trySetNumber(row, col, number)) {
 				solver.setNumber(row, col, number);
-				System.out.println("grid["+row+"]"+"["+col+"]"+"="+number);
 			} else {
 				JOptionPane.showMessageDialog(null, number + " is an illegal move at position: " + row + ", " + col);
 			}
@@ -84,12 +84,12 @@ public class SudokoGrid {
 
 	}
 
-	public static void setNumbers(SudokuSolver solve, ArrayList<JTextField> lista) {
+	public static void setNumbers(SudokuSolver solver, List<JTextField> lista) {
 		int i = 0;
-		if (solve.solve()) {
+		if (solver.solve()) {
 			for (int row = 0; row < 9; row++) {
 				for (int col = 0; col < 9; col++) {
-					lista.get(i).setText("" + solve.getNumber(row, col));
+					lista.get(i).setText("" + solver.getNumber(row, col));
 					i++;
 				}
 			}
@@ -98,7 +98,7 @@ public class SudokoGrid {
 		}
 	}
 
-	public static void clear(ArrayList<JTextField> lista, SudokuSolver solver) {
+	public static void clear(List<JTextField> lista, SudokuSolver solver) {
 		int i = 0;
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {

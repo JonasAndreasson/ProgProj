@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Solver implements SudokuSolver {
 	private int[][] grid;
-	static final String correct = "123456789";
+	static final String CORRECT = "123456789";
 
 	public Solver() {
 		grid = new int[9][9];
@@ -151,36 +151,39 @@ public class Solver implements SudokuSolver {
 	}
 
 	private boolean solvedRow(int row) {
-		String output = "";
+		StringBuilder output = new StringBuilder();
+		String outString;
 		for (int i = 0; i < 9; i++) {
-			output = output + Integer.toString(grid[row][i]);
+			output.append(grid[row][i]);
 		}
-		output = sortString(output);
-		return output.matches(correct);
+		outString = sortString(output.toString());
+		return outString.matches(CORRECT);
 	}
 
 	private boolean solvedCol(int col) {
-		String output = "";
+		StringBuilder output = new StringBuilder();
+		String outString;
 		for (int i = 0; i < 9; i++) {
-			output = output + Integer.toString(grid[i][col]);
+			output.append(grid[i][col]);
 		}
-		output = sortString(output);
-		return output.matches(correct);
+		outString = sortString(output.toString());
+		return outString.matches(CORRECT);
 
 	}
 
 	private boolean solvedBox(int row, int col) {
-		String output = "";
+		StringBuilder output = new StringBuilder();
+		String outString;
 		for (int i = 0; i < 9; i++) {
-			output = output + Integer.toString(grid[3 * (row / 3) + (i % 3)][3 * (col / 3) + (i / 3)]);
+			output.append((grid[3 * (row / 3) + (i % 3)][3 * (col / 3) + (i / 3)]));
 		}
-		output = sortString(output);
-		return output.matches(correct);
+		outString = sortString(output.toString());
+		return outString.matches(CORRECT);
 
 	}
 
 	private String sortString(String string) {
-		char temp[] = string.toCharArray();
+		char[] temp = string.toCharArray();
 		Arrays.sort(temp);
 		return new String(temp);
 	}
@@ -226,11 +229,20 @@ public class Solver implements SudokuSolver {
 	}
 
 	@Override
+	/**
+	 * Gör en kopia av den interna matrisen och returnerar kopian.
+	 * 
+	 * @return a copy of the internal grid used by the class for all operations.
+	 */
 	public int[][] getNumbers() {
-		return grid;
+		return grid.clone();
 	}
 
 	@Override
+	/**
+	 * @param grid the internal grid is replaced with this one
+	 * 
+	 */
 	public void setNumbers(int[][] grid) {
 		this.grid = grid;
 
